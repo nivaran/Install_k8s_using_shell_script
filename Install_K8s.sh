@@ -95,7 +95,8 @@ read -p "To make it Control-plane ( master-node ) Enter 0 ,For Exit Enter 1  : "
 if [ "$user_input" -eq 0 ];then
         user_ip = hostname -I | awk '{print $1}'
 	echo "Initializing Kubeadm , may take some time"
-	if sudo kubeadm init --apiserver-advertise-address=$user_ip --ignore-preflight-errors=all | grep -q 'kubeadm join';then
+	# --------------- if coredn or CNI fails then check is --pod-network-cidr are overlapping or not by kubectl describe pod weave_____ & is passing cidr is good practice
+	if sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=$user_ip --ignore-preflight-errors=all | grep -q 'kubeadm join';then
 		echo ""
 		
 	else 
